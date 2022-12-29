@@ -2,30 +2,30 @@
 
 void	rotate_a(t_node *stack_a)
 {
-    ft_printf("ra\n");
+	ft_printf("ra\n");
 }
 
 void	rotate_b(t_node *stack_b)
 {
-    ft_printf("rb\n");
+	ft_printf("rb\n");
 }
 
 void	rotate_all(t_node *stack_a, t_node *stack_b)
 {
-    ft_printf("rr\n");
+	ft_printf("rr\n");
 }
 
 void	reverse_a(t_node *stack_a)
 {
-    ft_printf("rra\n");
+	ft_printf("rra\n");
 }
 
 void	reverse_b(t_node *stack_b)
 {
-    ft_printf("rrb\n");
+	ft_printf("rrb\n");
 }
 
 void	reverse_all(t_node *stack_a, t_node *stack_b)
 {
-    ft_printf("rrr\n");
+	ft_printf("rrr\n");
 }
