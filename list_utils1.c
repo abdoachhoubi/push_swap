@@ -1,11 +1,11 @@
 #include "./push_swap.h"
 
 // Create a new list
-t_list	*ft_lstnew(int value)
+t_node	*ft_lstnew(int value)
 {
-	t_list	*list;
+	t_node	*list;
 
-	list = (t_list *)malloc(sizeof(t_list));
+	list = (t_node *)malloc(sizeof(t_node));
 	if (!list)
 		return (NULL);
 	list -> value = value;
@@ -16,7 +16,7 @@ t_list	*ft_lstnew(int value)
 
 void	ft_lstadd_back(t_node **head, t_node *node)
 {
-	t_list	*temp;
+	t_node	*temp;
 
 	temp = *head;
 	if (!*head)
@@ -26,13 +26,17 @@ void	ft_lstadd_back(t_node **head, t_node *node)
 		while (temp -> next)
 			temp = temp -> next;
 		temp -> next = node;
+		node -> previous = temp;
 	}
 }
 
 void	ft_lstadd_front(t_node **head, t_node *node)
 {
 	if (head && node)
+	{
 		node -> next = *head;
+		node -> previous = NULL;
+	}
 	if (node)
 		*head = node;
 }
@@ -40,6 +44,7 @@ void	ft_lstadd_front(t_node **head, t_node *node)
 int	ft_lstsize(t_node *list)
 {
 	int		size;
+	t_node	*temp;
 
 	temp = list;
 	size = 0;

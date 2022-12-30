@@ -32,11 +32,11 @@ void	reverse_b(t_node *stack_b);
 void	reverse_all(t_node *stack_a, t_node *stack_b);
 
 // List Utils
-t_list	*ft_lstnew(int	value);
+t_node	*ft_lstnew(int	value);
 void    ft_lstadd_back(t_node **list, t_node *node);
 void	ft_lstadd_front(t_node **list, t_node *node);
 int		ft_lstsize(t_node *list);
-void	ft_lstdel_node(t_node **list, t_node *node);
+void	ft_lstdel_node(t_node *node);
 void	ft_lstclear(t_node **list);
 
 #endif
