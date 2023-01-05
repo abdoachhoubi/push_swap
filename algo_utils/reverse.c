@@ -5,12 +5,11 @@ int	reverse(t_node **stack)
 {
 	t_node  *temp;
 
-    if (ft_lstsize(*stack) <= 1)
+	if (ft_lstsize(*stack) <= 1)
         return (0);
-    temp = ft_lstlast(*stack);
-    temp -> previous -> next = NULL;
-    ft_extract_node(stack, temp);
-    ft_lstadd_front(stack, temp);
+	temp = ft_lstlast(*stack);
+	ft_extract_node(stack, temp);
+	ft_lstadd_front(stack, temp);
     return (1);
 }
 

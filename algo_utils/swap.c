@@ -8,9 +8,6 @@ int	swap(t_node **stack)
     if (ft_lstsize(*stack) <= 1)
         return (0);
     temp = ft_lstlast(*stack) -> previous;
-    // DEBUGGING START
-    ft_printf("DEBUGGING IN SWAP = %d\n", ft_lstlast(stack));
-    // DEBUGGING END
     ft_extract_node(stack, temp);
     ft_lstadd_back(stack, temp);
     return (1);

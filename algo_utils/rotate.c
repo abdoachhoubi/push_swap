@@ -9,8 +9,6 @@ int	rotate(t_node **stack)
         return (0);
 	temp = *stack;
 	ft_extract_node(stack, *stack);
-	temp -> next = NULL;
-	temp -> previous = NULL;
 	ft_lstadd_back(stack, temp);
     return (1);
 }
