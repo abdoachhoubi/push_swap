@@ -21,10 +21,18 @@ void	ft_lstdel_node(t_node **head, t_node *node)
 {
 	if (!node)
 		return ;
-	if (node -> previous)
-		node -> previous -> next = node -> next;
-	else
-		(*head) = node -> next; 
+	if (node -> previous || node -> next)
+	{
+		if (node -> previous)
+			node -> previous -> next = node -> next;
+		if (node -> next && node -> previous)
+			node -> next -> previous = node -> previous;
+	}
+	if (!(node -> previous))
+	{
+		(*head) = node -> next;
+		(*head) -> previous = NULL;
+	}
 	free(node);
 }
 
@@ -32,10 +40,18 @@ t_node	*ft_extract_node(t_node **head, t_node *node)
 {
 	if (!node)
 		return (NULL);
-	if (node -> previous)
-		node -> previous -> next = node -> next;
-	else
+	if (node -> previous || node -> next)
+	{
+		if (node -> previous)
+			node -> previous -> next = node -> next;
+		if (node -> next && node -> previous)
+			node -> next -> previous = node -> previous;
+	}
+	if (!(node -> previous))
+	{
 		(*head) = node -> next;
+		(*head) -> previous = NULL;
+	}
 	node -> next = NULL;
 	node -> previous = NULL;
 	return (node);
