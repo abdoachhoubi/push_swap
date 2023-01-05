@@ -17,13 +17,28 @@ int	ft_lstsize(t_node *list)
 }
 
 // Deletes a specific node from the list
-void	ft_lstdel_node(t_node *node)
+void	ft_lstdel_node(t_node **head, t_node *node)
 {
 	if (!node)
 		return ;
-	if (node -> previous && node -> next)
+	if (node -> previous)
 		node -> previous -> next = node -> next;
+	else
+		(*head) = node -> next; 
 	free(node);
+}
+
+t_node	*ft_extract_node(t_node **head, t_node *node)
+{
+	if (!node)
+		return (NULL);
+	if (node -> previous)
+		node -> previous -> next = node -> next;
+	else
+		(*head) = node -> next;
+	node -> next = NULL;
+	node -> previous = NULL;
+	return (node);
 }
 
 // Deletes all nodes of a list
@@ -34,7 +49,7 @@ void	ft_lstclear(t_node **head)
 	while (head && *head)
 	{
 		temp = (*head) -> next;
-		ft_lstdel_node(*head);
+		ft_lstdel_node(head, *head);
 		*head = temp;
 	}
 }

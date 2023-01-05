@@ -3,40 +3,41 @@
 // Swap stack
 int	swap(t_node **stack)
 {
-    t_node  *last_node;
-    t_node  *last_node_prev;
-    t_node  *last_node_prev_prev;
+    t_node  *temp;
 
     if (ft_lstsize(*stack) <= 1)
-        return (-1);
-    last_node = ft_lstlast(*stack);
-    last_node_prev = last_node -> previous;
-    last_node_prev_prev = last_node_prev -> previous;
-    if (last_node_prev_prev)
-    {
-        ft_printf(YELLOW"INSIDE THE CONDITION\n"RESET);
-        last_node_prev_prev -> next = last_node;
-        last_node -> previous = last_node_prev_prev;
-    }
-    ft_printf(GREEN"LIST SIZE ----> %d\n"RESET, ft_lstsize(*stack));
-    last_node -> next = last_node_prev;
-    last_node_prev -> previous = last_node;
-    last_node_prev -> next = NULL;
-    ft_printf(RED"%d\n"RESET, last_node_prev -> value);
+        return (0);
+    temp = ft_lstlast(*stack) -> previous;
+    // DEBUGGING START
+    ft_printf("DEBUGGING IN SWAP = %d\n", ft_lstlast(stack));
+    // DEBUGGING END
+    ft_extract_node(stack, temp);
+    ft_lstadd_back(stack, temp);
     return (1);
 }
 
 // Swap a stack and print operation
 void	swap_stack(t_node **stack, char *s)
 {
-    if (swap(stack) != -1)
+    if (swap(stack))
 	    ft_printf("%s\n", s);
 }
 
 // Swap both stacks and pront ss
 void	swap_all(t_node **stack_a, t_node **stack_b)
 {
-	swap(stack_a);
-	swap(stack_b);
-	ft_printf("ss\n");
+	int sa;
+    int sb;
+
+    sa = swap(stack_a);
+    sb = swap(stack_b);
+    if (sa || sb)
+    {
+        if (sa && sb)
+            ft_printf("ss\n");
+        else if (sa)
+            ft_printf("sa\n");
+        else
+            ft_printf("sb\n");
+    }
 }

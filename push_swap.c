@@ -41,22 +41,54 @@ void	ft_print_list(t_node *stack)
 
 int	main(int ac, char **av)
 {
-	t_node	*head;
+	t_node	*stack_a;
+	t_node	*stack_b;
 	t_node	*temp;
 	int		i;
-	i = 1;
 
-	head = ft_lstnew(0);
+	// NOTE Filling stack a
+	i = 1;
+	stack_a = ft_lstnew(0);
 	while (i < 10)
 	{
 		temp = ft_lstnew(i);
-		ft_lstadd_back(&head, temp);
+		ft_lstadd_back(&stack_a, temp);
 		i++;
 	}
-	free(temp);
-	ft_print_list(head);
-	swap_stack(&head, "sa");
-	ft_print_list(head);
+
+	// NOTE Filling stack b
+	i = -1;
+	stack_b = ft_lstnew(0);
+	while (i > -10)
+	{
+		temp = ft_lstnew(i);
+		ft_lstadd_back(&stack_b, temp);
+		i--;
+	}
+
+	ft_printf(RED"\n--------------------------------------\n\n"RESET);
+	// NOTE Printing both stacks
+	ft_printf(RED"Printing stack_a\n"RESET);
+	ft_print_list(stack_a);
+	ft_printf(RED"Printing stack_b\n"RESET);
+	ft_print_list(stack_b);
+
+	// NOTE Testing utils
+	// DEBUGGING a = [null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, null]
+	swap_stack(&stack_a, "sa");
+	// DEBUGGING a = [null, 0, 1, 2, 3, 4, 5, 6, 7, 9, 8, null]
+	// swap_stack(&stack_a, "sa");
+
+	// NOTE Printing both stacks
+	ft_printf(RED"Printing stack_a\n"RESET);
+	ft_print_list(stack_a);
+	ft_printf(RED"Printing stack_b\n"RESET);
+	ft_print_list(stack_b);
+	ft_printf(RED"\n--------------------------------------\n\n"RESET);
+
+	// NOTE Checking leaks
 	system("leaks push_swap");
+
+	// NOTE End of program
 	return (0);
 }

@@ -40,12 +40,16 @@ t_node	*ft_lstnew(int	value);
 void    ft_lstadd_back(t_node **list, t_node *node);
 void	ft_lstadd_front(t_node **list, t_node *node);
 int		ft_lstsize(t_node *list);
-void	ft_lstdel_node(t_node *node);
+void	ft_lstdel_node(t_node **head, t_node *node);
 void	ft_lstclear(t_node **list);
 t_node	*ft_lstlast(t_node *head);
+t_node	*ft_extract_node(t_node **head, t_node *node);
 
 
 // Other utils
 void    	message_error(char *s);
 long long	ft_atol(char *s);
+
+// Dev tools
+void	ft_print_list(t_node *stack);
 #endif

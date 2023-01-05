@@ -6,10 +6,13 @@ int	rotate(t_node **stack)
     t_node  *temp;
 
 	if (ft_lstsize(*stack) <= 1)
-        return (-1);
-    temp = ft_lstlast(*stack);
-    ft_printf("\n\n---> Rotate\n\tLast element: %d\n", temp -> value);
-    return (0);
+        return (0);
+	temp = *stack;
+	ft_extract_node(stack, *stack);
+	temp -> next = NULL;
+	temp -> previous = NULL;
+	ft_lstadd_back(stack, temp);
+    return (1);
 }
 
 // Rotate a stack and print operation
@@ -22,7 +25,18 @@ void	rotate_stack(t_node **stack, char *s)
 // Rotate both stacks and print rr
 void	rotate_all(t_node **stack_a, t_node **stack_b)
 {
-	rotate(stack_a);
-	rotate(stack_b);
-	ft_printf("rr\n");
+	int	ra;
+	int	rb;
+
+	ra = rotate(stack_a);
+	rb = rotate(stack_b);
+	if (ra || rb)
+	{
+		if (ra && rb)
+			ft_printf("rr\n");
+		else if (ra)
+			ft_printf("ra\n");
+		else
+			ft_printf("rb\n");
+	}
 }
