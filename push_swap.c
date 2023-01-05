@@ -74,14 +74,14 @@ int	main(int ac, char **av)
 	ft_print_list(stack_b);
 
 	// NOTE Testing utils
-	// swap_stack(&stack_a, "sa");
-	// swap_stack(&stack_a, "sa");
-	// swap_stack(&stack_a, "sa");
-	// push_node(&stack_b, &stack_a, "pa");
-	// swap_stack(&stack_a, "sa");
-	// rotate_stack(&stack_a, "ra");
-	// rotate_stack(&stack_a, "ra");
-	// rotate_stack(&stack_a, "ra");
+	swap_stack(&stack_a, "sa");
+	swap_stack(&stack_a, "sa");
+	swap_stack(&stack_a, "sa");
+	push_node(&stack_b, &stack_a, "pa");
+	swap_stack(&stack_a, "sa");
+	rotate_stack(&stack_a, "ra");
+	rotate_stack(&stack_a, "ra");
+	rotate_stack(&stack_a, "ra");
 	reverse_stack(&stack_a, "rra");
 	push_node(&stack_a, &stack_b, "pb");
 	reverse_stack(&stack_a, "rra");
@@ -94,7 +94,7 @@ int	main(int ac, char **av)
 	ft_printf(RED"\n--------------------------------------\n\n"RESET);
 
 	// NOTE Checking leaks
-	// system("leaks push_swap");
+	system("leaks push_swap");
 
 	// NOTE End of program
 	return (0);
