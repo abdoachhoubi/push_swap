@@ -1,6 +1,7 @@
-SRC = ${addprefix algo_utils/, push.c reverse.c rotate.c swap.c} \
-		${addprefix stack_utils/stack_utils, 1.c 2.c} \
-		error.c push_swap.c
+SRC = ${addprefix src/, push.c reverse.c rotate.c swap.c} \
+		${addprefix src/, error_utils.c validation_utils.c push_swap.c} \
+		${addprefix src/, checks.c} \
+		${addprefix src/stack_utils, 1.c 2.c} \
 
 NAME = push_swap
 CC = cc
