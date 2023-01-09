@@ -3,14 +3,14 @@
 // Rotates a stack
 int	rotate(t_node **stack)
 {
-    t_node  *temp;
+	t_node*	new;
 
-	if (ft_lstsize(*stack) <= 1)
-        return (0);
-	temp = *stack;
-	ft_extract_node(stack, *stack);
-	ft_lstadd_back(stack, temp);
-    return (1);
+	if (*stack == NULL || (*stack)->next == NULL)
+		return (0);
+	new = ft_lstnew((*stack) -> value);
+	ft_lstdel_node(stack, *stack);
+	ft_lstadd_back(stack, new);
+	return (1);
 }
 
 // Rotate a stack and print operation

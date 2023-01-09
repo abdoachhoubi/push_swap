@@ -3,13 +3,15 @@
 // Swap stack
 int	swap(t_node **stack)
 {
-    t_node  *temp;
+    t_node* new;
+    t_node* second;
 
-    if (ft_lstsize(*stack) <= 1)
+    if (*stack == NULL || (*stack)->next == NULL)
         return (0);
-    temp = (*stack) -> next;
-    ft_extract_node(stack, temp);
-    ft_lstadd_front(stack, temp);
+    second = (*stack)->next;
+    new = ft_lstnew(second -> value);
+    ft_lstdel_node(stack, second);
+    ft_lstadd_front(stack, new);
     return (1);
 }
 

@@ -3,13 +3,13 @@
 // Push a node from source to target
 int	push(t_node **source, t_node **target)
 {
-	t_node  *temp;
+	t_node  *new;
 
-    if (ft_lstsize(*source) < 1)
+    if (*source == NULL)
         return (0);
-    temp = *source;
-    ft_extract_node(source, temp);
-    ft_lstadd_front(target, temp);
+    new = ft_lstnew((*source) -> value);
+    ft_lstdel_node(source, *source);
+    ft_lstadd_front(target, new);
     return (1);
 }
 
