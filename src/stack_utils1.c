@@ -1,6 +1,6 @@
 #include "../inc/push_swap.h"
 
-// Create a new list
+// Create a new node
 t_node	*ft_lstnew(int value)
 {
 	t_node	*list;
@@ -14,31 +14,46 @@ t_node	*ft_lstnew(int value)
 	return (list);
 }
 
-// Adds a new node to the back
-void	ft_lstadd_back(t_node **head, t_node *node)
+// Adds a new node to the front of the stack
+void ft_lstadd_front(t_node **head, t_node *node)
 {
-	t_node	*temp;
-
-	temp = *head;
-	if (!*head)
-		*head = node;
-	else
-	{
-		while (temp -> next)
-			temp = temp -> next;
-		temp -> next = node;
-		node -> previous = temp;
-	}
+    if (*head == NULL)
+    {
+        *head = node;
+        return;
+    }
+    (*head)->previous = node;
+    node->next = *head;
+    *head = node;
 }
 
-// Adds a new node to the head
-void	ft_lstadd_front(t_node **head, t_node *node)
+// Adds a new node to the back of the stack
+void ft_lstadd_back(t_node **head, t_node *node)
 {
-	if (head && node)
+    if (*head == NULL)
+    {
+        *head = node;
+        return;
+    }
+    t_node *curr = *head;
+    while (curr->next != NULL)
+        curr = curr->next;
+    curr->next = node;
+    node->previous = curr;
+}
+
+// Counts the size of the stack
+int	ft_lstsize(t_node *list)
+{
+	int		size;
+	t_node	*temp;
+
+	temp = list;
+	size = 0;
+	while (temp)
 	{
-		node -> next = *head;
-		node -> previous = NULL;
+		temp = temp -> next;
+		size++;
 	}
-	if (node)
-		*head = node;
+	return (size);
 }

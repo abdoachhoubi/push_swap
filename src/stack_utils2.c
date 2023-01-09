@@ -1,60 +1,30 @@
 #include "../inc/push_swap.h"
 
-// Counts the size of the list
-int	ft_lstsize(t_node *list)
-{
-	int		size;
-	t_node	*temp;
 
-	temp = list;
-	size = 0;
-	while (temp)
-	{
-		temp = temp -> next;
-		size++;
-	}
-	return (size);
-}
-
-// Deletes a specific node from the list
+// Deletes a node from the satck
 void	ft_lstdel_node(t_node **head, t_node *node)
 {
-	if (!node)
-		return ;
-	if (node -> previous || node -> next)
-	{
-		if (node -> previous)
-			node -> previous -> next = node -> next;
-		if (node -> next && node -> previous)
-			node -> next -> previous = node -> previous;
-	}
-	if (!(node -> previous))
-	{
-		(*head) = node -> next;
-		(*head) -> previous = NULL;
-	}
-	free(node);
+    if (*head == NULL || node == NULL)
+        return;
+    if (*head == node)
+        *head = node->next;
+    if (node->next != NULL)
+        node->next->previous = node->previous;
+    if (node->previous != NULL)
+        node->previous->next = node->next;
+    free(node);
 }
 
+// Extracts a node from the stack
 t_node	*ft_extract_node(t_node **head, t_node *node)
 {
-	if (!node)
-		return (NULL);
-	if (node -> previous || node -> next)
-	{
-		if (node -> previous)
-			node -> previous -> next = node -> next;
-		if (node -> next && node -> previous)
-			node -> next -> previous = node -> previous;
-	}
-	if (!(node -> previous))
-	{
-		(*head) = node -> next;
-		(*head) -> previous = NULL;
-	}
-	node -> next = NULL;
-	node -> previous = NULL;
-	return (node);
+	t_node	*new;
+
+	new = ft_lstnew(node -> value);
+	if (!new)
+		message_free(RED"Error:\nMemory allocation failed!"RESET, head);
+	ft_lstdel_node(head, node);
+	return (new);
 }
 
 // Deletes all nodes of a list
