@@ -1,56 +1,45 @@
 #include "../inc/push_swap.h"
 
-void	ft_print_list(t_node *stack)
+// Sorts stack of 3 elements
+int	short_sort(t_node **stack_a)
 {
-	ft_printf("[");
-	while (stack)
+	t_node	*middle;
+	
+	if (ft_lstsize(*stack_a) == 2)
+		swap_stack(stack_a, "sa");
+	else
 	{
-		ft_printf("%d,\t", stack -> value);
-		stack = stack -> next;
+		middle = (*stack_a) -> next;
+		if (((*stack_a) -> value) > (middle -> next -> value))
+			rotate_stack(stack_a, "ra");
+		else if (((*stack_a) -> value) > (middle -> value))
+			swap_stack(stack_a, "sa");
+		else
+			reverse_stack(stack_a, "rra");
 	}
-	ft_printf("]\n");
-}
-
-void	fill_stack(t_node **head, char **args, int len)
-{
-	int		i;
-	t_node	*temp;
-
-	i = 1;
-	*head = ft_lstnew(ft_atoi(args[i++]));
-	while (i < len)
-	{
-		temp = ft_lstnew(ft_atoi(args[i++]));
-		if (! temp)
-			message_free(RED"Error:\nNode allocation failed\n"RESET, head);
-		ft_lstadd_back(head, temp);
-	}
+	return (check_sorted(*stack_a));
 }
 
 void	sort_stack(t_node **stack_a, t_node	**stack_b)
 {
-	// DEBUGGING Starts
-	ft_printf(RED"---------------------------------------------------\n"RESET);
-	// DEV Printing stacks
-	ft_printf("stack_a =\t");
-	ft_print_list(*stack_a);
-	ft_printf("stack_b =\t");
-	ft_print_list(*stack_b);
+	int	size;
+	int	sorted;
 
-	// DEV Testing operations
-	swap_stack(stack_a, "sa");
-	push_node(stack_a, stack_b, "pb");
-	push_node(stack_a, stack_b, "pb");
-	rotate_stack(stack_b, "rb");
-	reverse_stack(stack_b, "rrb");
-
-	// DEV Printing stacks
-	ft_printf("stack_a =\t");
-	ft_print_list(*stack_a);
-	ft_printf("stack_b =\t");
-	ft_print_list(*stack_b);
-	ft_printf(RED"---------------------------------------------------\n"RESET);
-	// DEBUGGING Ends
+	size = ft_lstsize(*stack_a);
+	sorted = 0;
+	if (size <= 3)
+	{
+		while (!sorted)
+			sorted = short_sort(stack_a);
+	}
+	// else if (size <= 5)
+	// 	mini_sort(stack_a, stack_b);
+	// else if (size <= 100)
+	// 	medium_sort(stack_a, stack_b);
+	// else if (size <= 500)
+	// 	big_sort(stack_a, stack_b);
+	// if (check_sorted(*stack_a))
+	// 	exit(EXIT_SUCCESS);
 }
 
 int	main(int ac, char **av)
@@ -65,18 +54,13 @@ int	main(int ac, char **av)
 		fill_stack(&stack_a, av, ac);
 		check_duplicates(stack_a);
 		if (check_sorted(stack_a))
-		{
-			ft_printf(GREEN"Stack Sorted\n"RESET);
-			exit(1);
-		}
+			exit(EXIT_SUCCESS);
 		sort_stack(&stack_a, &stack_b);
+		ft_print_list(stack_a);
 	}
-	else
-		message_error(RED"Error:\nNot enough arguments"RESET);
-	
 	// DEBUGGING Start
 	// DEV Checking leaks
-	system("leaks push_swap");
+	// system("leaks push_swap");
 	// DEBUGGING End
 	return (0);
 }
