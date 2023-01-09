@@ -20,6 +20,55 @@ int	short_sort(t_node **stack_a)
 	return (check_sorted(*stack_a));
 }
 
+t_node	*smallest_node(t_node *head)
+{
+	t_node	*smallest;
+
+	smallest = head -> next;
+	while (head && smallest)
+	{
+		if (head -> value < smallest -> value)
+			smallest = head;
+		else
+			smallest = head;
+		head = head -> next;
+	}
+	return (smallest);
+}
+
+void	move_smallest_to_top(t_node **stack, t_node *smallest)
+{
+	t_node *temp;
+
+	ft_printf(RED"smallest -> %d\n"RESET, smallest -> value);
+	temp = *stack;
+	while (temp && ((temp -> value) != (smallest -> value)))
+		rotate_stack(stack, "ra");
+	ft_print_list(*stack);
+}
+
+// Sorts a stack that contains 5 or less nodes
+void	mini_sort(t_node **stack_a, t_node **stack_b)
+{
+	int	sorted;
+	int	size;
+	int	i;
+	t_node *temp;
+
+	size = ft_lstsize(*stack_a);
+	i = 0;
+	while (i < size)
+	{
+		temp = smallest_node(*stack_a);
+		move_smallest_to_top(stack_a, temp);
+		// push_node(stack_a, stack_b, "pb");
+		i++;
+	}
+	while (*stack_b)
+		push_node(stack_b, stack_a, "pa");
+}
+
+// Sorts a stack
 void	sort_stack(t_node **stack_a, t_node	**stack_b)
 {
 	int	size;
@@ -32,8 +81,11 @@ void	sort_stack(t_node **stack_a, t_node	**stack_b)
 		while (!sorted)
 			sorted = short_sort(stack_a);
 	}
-	// else if (size <= 5)
-	// 	mini_sort(stack_a, stack_b);
+	else if (size <= 5)
+	{
+		mini_sort(stack_a, stack_b);
+		// ft_printf(GREEN"smallest -> %d\n"RESET, smallest_node(*stack_a) -> value);
+	}
 	// else if (size <= 100)
 	// 	medium_sort(stack_a, stack_b);
 	// else if (size <= 500)

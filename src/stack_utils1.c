@@ -42,7 +42,7 @@ void ft_lstadd_back(t_node **head, t_node *node)
     node->previous = curr;
 }
 
-// Counts the size of the stack
+// Counts the size of the list
 int	ft_lstsize(t_node *list)
 {
 	int		size;
