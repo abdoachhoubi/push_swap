@@ -18,6 +18,8 @@
 // DLL Struct
 typedef	struct s_node {
 	int				value;
+	int				index;
+	int				target;
 	struct s_node	*next;
 	struct s_node	*previous;
 }	t_node;
@@ -46,6 +48,7 @@ t_node	*ft_lstlast(t_node *head);
 t_node	*ft_extract_node(t_node **head, t_node *node);
 
 // Sorting utils
+void	fill_stack(t_node **head, char **args, int len);
 void	sort_stack(t_node **stack_a, t_node	**stack_b);
 int		check_sorted(t_node *stack);
 int		check_arr_sorted(int *arr, int n);
@@ -54,7 +57,7 @@ int		check_arr_sorted(int *arr, int n);
 long long	ft_atol(char *s);
 int			valid_int(long long n);
 int			validate_args(char **args, int len);
-void	check_duplicates(t_node *stack);
+void		check_duplicates(t_node *stack);
 
 // Error handling utils
 void	message_error(char *s);
