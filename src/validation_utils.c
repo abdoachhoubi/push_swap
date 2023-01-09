@@ -35,6 +35,20 @@ int valid_int(long long n)
 	return (0);
 }
 
+int	valid_num(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]) && arg[i] != '-' && arg[i] != '+' && arg[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int validate_args(char **args, int len)
 {
 	int i;
@@ -44,7 +58,7 @@ int validate_args(char **args, int len)
 	valid = 1;
 	while (i < len)
 	{
-		if (!valid_int(ft_atol(args[i])))
+		if (!valid_num(args[i]) || !valid_int(ft_atol(args[i])))
 			valid = 0;
 		i++;
 	}
