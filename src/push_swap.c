@@ -1,118 +1,131 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aachhoub <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/20 14:36:34 by aachhoub          #+#    #+#             */
+/*   Updated: 2023/01/05 14:18:13 by aachhoub         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/push_swap.h"
 
-// Sorts stack of 3 elements
-int	short_sort(t_node **stack_a)
+/* is_sorted:
+*	Checks if a stack is sorted.
+*	Returns 0 if the stack is not sorted, 1 if it is sorted.
+*/
+int	is_sorted(t_node *stack)
 {
-	t_node	*middle;
-	
-	if (ft_lstsize(*stack_a) == 2)
-		swap_stack(stack_a, "sa");
-	else
+	while (stack->next)
 	{
-		middle = (*stack_a) -> next;
-		if (((*stack_a) -> value) > (middle -> next -> value))
-			rotate_stack(stack_a, "ra");
-		else if (((*stack_a) -> value) > (middle -> value))
-			swap_stack(stack_a, "sa");
-		else
-			reverse_stack(stack_a, "rra");
+		if (stack->content > stack->next->content)
+			return (0);
+		stack = stack->next;
 	}
-	return (check_sorted(*stack_a));
+	return (1);
 }
 
-t_node	*smallest_node(t_node *head)
+/* push_swap:
+*	Chooses a sorting algo depending on the number
+*	of values to be sorted.
+*/
+static void	push_swap(t_node **stack_a, t_node **stack_b, int stack_size)
 {
-	t_node	*smallest;
-
-	smallest = head -> next;
-	while (head && smallest)
-	{
-		if (head -> value < smallest -> value)
-			smallest = head;
-		else
-			smallest = head;
-		head = head -> next;
-	}
-	return (smallest);
+	if (stack_size == 2 && !is_sorted(*stack_a))
+		swap(stack_a, "sa");
+	else if (stack_size == 3)
+		sort_tree(stack_a);
+	else if (stack_size > 3 && !is_sorted(*stack_a))
+		sort(stack_a, stack_b);
 }
 
-void	move_smallest_to_top(t_node **stack, t_node *smallest)
+/* fill_stack:
+*	Fills stack_a with the provided values.
+*	If the values are out of integer range, prints and error and exits the program.
+*/
+t_node	*fill_stack(int ac, char **av)
 {
-	t_node *temp;
+	t_node		*stack_a;
+	long int	nb;
+	int			i;
 
-	ft_printf(RED"smallest -> %d\n"RESET, smallest -> value);
-	temp = *stack;
-	while (temp && ((temp -> value) != (smallest -> value)))
-		rotate_stack(stack, "ra");
-	ft_print_list(*stack);
-}
-
-// Sorts a stack that contains 5 or less nodes
-void	mini_sort(t_node **stack_a, t_node **stack_b)
-{
-	int	sorted;
-	int	size;
-	int	i;
-	t_node *temp;
-
-	size = ft_lstsize(*stack_a);
+	stack_a = NULL;
+	nb = 0;
 	i = 0;
-	while (i < size)
+	while (i < ac)
 	{
-		temp = smallest_node(*stack_a);
-		move_smallest_to_top(stack_a, temp);
-		// push_node(stack_a, stack_b, "pb");
+		nb = ft_atoi(av[i]);
+		if (nb > INT_MAX || nb < INT_MIN)
+			exit_error(NULL, NULL);
+		if (i == 0)
+			stack_a = stack_new((int)nb);
+		else
+			ft_stack_add_back(&stack_a, stack_new((int)nb));
 		i++;
 	}
-	while (*stack_b)
-		push_node(stack_b, stack_a, "pa");
+	return (stack_a);
 }
 
-// Sorts a stack
-void	sort_stack(t_node **stack_a, t_node	**stack_b)
+/* assign_index:
+*	Assigns an index to each value in stack a.
+*	because indexes can be checked and compared instead of actual values,
+*	which may or may not be adjacent to each other.
+*		ex. values:		-87	 9	91	12
+*		indexes:		[1]	[2]	[4]	[3]
+*	The indexes are assigned from highest (stack_size) to lowest (1).
+*/
+void	assign_index(t_node *stack_a, int size)
 {
-	int	size;
-	int	sorted;
+	t_node	*ptr;
+	t_node	*highest;
+	int		content;
 
-	size = ft_lstsize(*stack_a);
-	sorted = 0;
-	if (size <= 3)
+	while (--size > 0)
 	{
-		while (!sorted)
-			sorted = short_sort(stack_a);
+		ptr = stack_a;
+		content = INT_MIN;
+		highest = NULL;
+		while (ptr)
+		{
+			if (ptr->content == INT_MIN && ptr->index == 0)
+				ptr->index = 1;
+			if (ptr->content > content && ptr->index == 0)
+			{
+				content = ptr->content;
+				highest = ptr;
+				ptr = stack_a;
+			}
+			else
+				ptr = ptr->next;
+		}
+		if (highest != NULL)
+				highest->index = size;
 	}
-	else if (size <= 5)
-	{
-		mini_sort(stack_a, stack_b);
-		// ft_printf(GREEN"smallest -> %d\n"RESET, smallest_node(*stack_a) -> value);
-	}
-	// else if (size <= 100)
-	// 	medium_sort(stack_a, stack_b);
-	// else if (size <= 500)
-	// 	big_sort(stack_a, stack_b);
-	// if (check_sorted(*stack_a))
-	// 	exit(EXIT_SUCCESS);
 }
 
+/* main:
+*	Checks if the input is correct, in which case it initializes stacks a and b,
+*	assigns each value indexes and sorts the stacks. When sorting is done, frees
+*	the stacks and exits.
+*/
 int	main(int ac, char **av)
 {
-	t_node	*stack_b;
 	t_node	*stack_a;
+	t_node	*stack_b;
+	int		size;
+	char	**tab;
 
-	if (ac > 1)
-	{
-		if (!validate_args(av, ac))
-			message_error(RED"Error:\npush_swap only accept int values"RESET);
-		fill_stack(&stack_a, av, ac);
-		check_duplicates(stack_a);
-		if (check_sorted(stack_a))
-			exit(EXIT_SUCCESS);
-		sort_stack(&stack_a, &stack_b);
-		ft_print_list(stack_a);
-	}
-	// DEBUGGING Start
-	// DEV Checking leaks
-	// system("leaks push_swap");
-	// DEBUGGING End
+	tab = fill_tab(av, &size, ac);
+	if (!valid_input(tab))
+		exit_error(NULL, NULL);
+	stack_a = fill_stack(size, tab);
+	stack_b = NULL;
+	size = ft_stack_size(stack_a);
+	assign_index(stack_a, size + 1);
+	push_swap(&stack_a, &stack_b, size);
+	free_stack(&stack_a);
+	free_stack(&stack_b);
 	return (0);
 }
